@@ -82,6 +82,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -110,9 +111,11 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies />
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Candlestick.cpp" />
     <ClCompile Include="CandleStock.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -127,6 +130,7 @@
     <Image Include="mainLogo.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Candlestick.h" />
     <ClInclude Include="CandleStock.h" />
   </ItemGroup>
   <ItemGroup>

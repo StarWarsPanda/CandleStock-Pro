@@ -21,6 +21,9 @@
     <ClCompile Include="CandleStock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Candlestick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitattributes" />
@@ -36,6 +39,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CandleStock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Candlestick.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
