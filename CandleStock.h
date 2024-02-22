@@ -35,7 +35,6 @@ namespace CandleStock
 			System::Windows::Forms::OpenFileDialog^ StockFile;
 
 			System::Windows::Forms::DataVisualization::Charting::Chart^ StockChart;
-			System::Windows::Forms::DataGridView^ StockData;
 
 			System::Windows::Forms::MonthCalendar^ startDateSelector;
 			System::Windows::Forms::MonthCalendar^ endDateSelector;

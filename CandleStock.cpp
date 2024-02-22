@@ -41,13 +41,6 @@ CandleStock::MainForm::MainForm()
 
 	std::vector<Candlestick> Stock = loadStock(msclr::interop::marshal_as<std::string>(this->StockFile->FileName), ParseType::CSV);
 
-	System::Collections::Generic::List<ManagedCandlestick>^ CLIStock = gcnew System::Collections::Generic::List<ManagedCandlestick>();
-
-	for each (Candlestick candlestick in Stock)
-	{
-		CLIStock->Add(ManagedCandlestick(candlestick));
-	}
-
 	/* objects */
 	this->stockFileOpener = gcnew System::Windows::Forms::Button();
 	this->stockFileOpener->Name = L"Stock File Opener";
@@ -128,9 +121,9 @@ CandleStock::MainForm::MainForm()
 	StockChartArea->AxisY->ScrollBar->Enabled = true;
 	StockChartArea->AxisY->ScaleView->Zoomable = true;
 
-	this->StockChart->Location = System::Drawing::Point(220, 125);
+	this->StockChart->Location = System::Drawing::Point(220, 0);
 	this->StockChart->Text = "Stock Chart";
-	this->StockChart->Size = System::Drawing::Size(840, 420);
+	this->StockChart->Size = System::Drawing::Size(840, 545);
 
 	System::Windows::Forms::DataVisualization::Charting::Series^ candleStickSeries = gcnew System::Windows::Forms::DataVisualization::Charting::Series(L"Candlestick Series");
 	candleStickSeries->ChartArea = L"Stock Chart";
@@ -168,12 +161,6 @@ CandleStock::MainForm::MainForm()
 	this->StockChart->ChartAreas->Add(VolumeChartArea);
 	this->StockChart->Series->Add(volumeSeries);
 
-	this->StockData = gcnew System::Windows::Forms::DataGridView();
-
-	this->StockData->Name = L"Stock Data";
-	this->StockData->Location = System::Drawing::Point(220, 0);
-	this->StockData->Size = System::Drawing::Size(840, 125);
-	this->StockData->DataSource = CLIStock;
 	this->Controls->Add(stockFileOpener);
 	this->Controls->Add(stockPeriodSelector);
 	this->Controls->Add(updateButton);
@@ -182,7 +169,6 @@ CandleStock::MainForm::MainForm()
 	this->Controls->Add(endDateSelector);
 	
 	this->Controls->Add(StockChart);
-	this->Controls->Add(StockData);
 
 	/* events */
 	this->Resize += gcnew System::EventHandler(this, &MainForm::whenWindowResized);
@@ -242,8 +228,6 @@ System::Void CandleStock::MainForm::whenStockFileOK(System::Object^ sender, Syst
 	{
 		this->stockPeriodSelector->SelectedItem = L"Monthly";
 	}
-
-	this->stockFileOpener->Text = this->StockData->Rows[1]->Cells["Name"]->Value->ToString();
 }
 
 System::Void CandleStock::MainForm::whenPeriodItemChanged(System::Object^ sender, System::EventArgs^ e)
@@ -271,13 +255,6 @@ System::Void CandleStock::MainForm::whenPeriodItemChanged(System::Object^ sender
 	System::String^ Filename = (this->StockFile->FileName + period + ".csv");
 
 	std::vector<Candlestick> Stock = loadStock(msclr::interop::marshal_as<std::string>(Filename), ParseType::CSV);
-
-	System::Collections::Generic::List<ManagedCandlestick>^ CLIStock = gcnew System::Collections::Generic::List<ManagedCandlestick>();
-
-	for each (Candlestick candlestick in Stock)
-	{
-		CLIStock->Add(ManagedCandlestick(candlestick));
-	}
 
 	this->startDateSelector->MinDate = Stock[0].m_date.toDateTime().AddDays(1);
 	this->startDateSelector->MaxDate = Stock[Stock.size() - 1].m_date.toDateTime();
@@ -316,10 +293,7 @@ System::Void CandleStock::MainForm::whenPeriodItemChanged(System::Object^ sender
 		this->StockChart->Series[1]->Points->Add(gcnew System::Windows::Forms::DataVisualization::Charting::DataPoint(candlestick.m_date.toDateTime().ToOADate(), candlestick.m_volume));
 	}
 
-	this->StockData->DataSource = CLIStock;
-
 	this->StockChart->Refresh();
-	this->StockData->Refresh();
 }
 
 int CandleStock::loadSetting(const std::string& filename, std::string& title, char windowState, uint16_t width, uint16_t height, std::string& icon)
